@@ -1,0 +1,11 @@
+model,hidden,gguf,backend,ctx,tg_tps,pp_tps,model_size_mb,elapsed_sec,error,note
+0.6B,1024,Qwen3-0.6B-Q4_K_M.gguf,vulkan,1024,570.93,29277.04,372.7,1,
+0.6B,1024,Qwen3-0.6B-Q4_K_M.gguf,hip,1024,296.51,27477.35,372.7,2,
+1.7B,2048,Qwen3-1.7B-Q4_K_M.gguf,vulkan,1024,321.88,12763.16,1024.0,2,
+1.7B,2048,Qwen3-1.7B-Q4_K_M.gguf,hip,1024,220.29,15504.58,1024.0,3,
+4B,2560,Qwen3-4B-Q4_K_M.gguf,vulkan,1024,174.31,5134.94,2389.3,4,
+4B,2560,Qwen3-4B-Q4_K_M.gguf,hip,1024,134.00,6634.15,2389.3,4,
+8B,4096,Qwen3-8B-Q4_K_M.gguf,vulkan,1024,104.61,2826.13,4792.5,7,
+8B,4096,Qwen3-8B-Q4_K_M.gguf,hip,1024,91.17,3972.54,4792.5,7,
+14B,5120,Qwen3-14B-Q4_K_M.gguf,vulkan,1024,,,,,skipped - download hung 3x per PROMPT fallback
+14B,5120,Qwen3-14B-Q4_K_M.gguf,hip,1024,,,,,skipped - download hung 3x per PROMPT fallback
