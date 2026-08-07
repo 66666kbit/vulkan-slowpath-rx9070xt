@@ -1,0 +1,16 @@
+model,hidden,backend,env,pp128_tps,pp_tps_pp512,tg128_tps,model_size_mb,elapsed_sec,error
+0.6B,1024,vulkan,baseline,18116.36,,571.90,,1,
+0.6B,1024,hip,baseline,10831.50,,292.25,,2,
+1.7B,2048,vulkan,baseline,9734.88,,321.80,,2,
+1.7B,2048,hip,baseline,7192.76,,221.69,,2,
+4B,2560,vulkan,baseline,4113.33,,174.50,,3,
+4B,2560,hip,baseline,4071.77,,129.24,,4,
+8B,4096,vulkan,baseline,2719.02,,104.31,,6,
+8B,4096,hip,baseline,2907.78,,91.12,,6,
+4B,2560,vulkan,pp512_tg128,,5222.76,174.24,,4,
+4B,2560,hip,pp512_tg128,,6671.42,128.93,,4,
+8B,4096,vulkan,pp512_tg128,,2866.37,103.82,,6,
+8B,4096,hip,pp512_tg128,,4198.69,90.97,,6,
+8B,4096,vulkan_perf,GGML_VULKAN_PERF=1,2711.34,,104.40,,6,
+14B,5120,vulkan,baseline,,,,,,"skipped: download hung 3x (PROMPT fallback: 进程死了 3 次重启还死 → 停)"
+14B,5120,hip,baseline,,,,,,"skipped: download hung 3x (PROMPT fallback: 进程死了 3 次重启还死 → 停)"
