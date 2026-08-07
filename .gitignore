@@ -1,0 +1,21 @@
+# Build artifacts
+*.zip
+*.tar.gz
+*.tar
+
+# Large binaries
+*.safetensors
+*.bin
+*.gguf
+*.exe
+*.dll
+*.so
+
+# Local-only paths (will be added by .gitignore on user's side, not here)
+# ...
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
