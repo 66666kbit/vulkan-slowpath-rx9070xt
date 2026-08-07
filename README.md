@@ -6,11 +6,17 @@ Diagnostic bundle for [llama.cpp issue #26663](https://github.com/ggml-org/llama
 
 We tested 4 Qwen3 Q4_K_M models (0.6B / 1.7B / 4B / 8B) on **b10298** of llama.cpp with both backends, on the same hardware the issue was reported on. **We did not reproduce the 5–7× slowdown.** On b10298 the Vulkan backend is in fact **1.15×–1.96× faster than HIP on token generation**, across all 4 models. Prefill (PP) is roughly even at small batch, HIP pulls ahead 1.3–1.5× at `pp512`.
 
-However, the source has a **real, independent code bug** for RDNA4 (`gfx1201`):
+### Update (2026-08-07): follow-up PR #26697 withdrawn
 
-- `ggml/src/ggml-vulkan/ggml-vulkan.cpp:450` — `get_device_architecture()` has no RDNA4 branch; RDNA4 falls through to `AMD_RDNA2` default.
-- `ggml-vulkan.cpp:18797` — `ggml_vk_khr_cooperative_matrix_support()` whitelists only `AMD_RDNA3` (workaround for AMD driver false-positive coopmat reporting). RDNA4 (mis-detected as RDNA2) gets the KHR_coopmat path **disabled**.
-- `ggml-vulkan.cpp:4076-4091` — `gpu_pipeline_configs` only contains RDNA1 and RDNA2 entries. `get_subgroup_size()` returns 0 for RDNA4, callers fall back to `subgroup_props.subgroupSize` (driver-reported 64) instead of the hardware-native wave32.
+The diagnostic originally hypothesized a code bug (RDNA4 misdetected as RDNA2, KHR_coopmat path disabled). A PR was opened ([#26697](https://github.com/ggml-org/llama.cpp/pull/26697)) to fix it. Maintainer `0cc4m` (Ruben Ortlam) pointed out that on the actual hardware:
+
+- RDNA4 deviceID is `0x7550` (not `0x1201` as the original PR assumed)
+- RDNA4's `integerDotProduct4x8BitPackedMixedSignednessAccelerated` is **true** (not false), so the existing L447 branch already catches RDNA4 and returns `AMD_RDNA3`
+- RDNA4 therefore already gets the KHR_coopmat path through the RDNA3 branch
+
+The full PR was a no-op. The author closed [#26697](https://github.com/ggml-org/llama.cpp/pull/26697) and is moving the diagnostic data into [issue #26663](https://github.com/ggml-org/llama.cpp/issues/26663) instead. The reproduction numbers and per-op profile below are still useful as a baseline for that issue.
+
+The original "code bug" analysis below is preserved for reference, but is **no longer believed to be a real bug** in the current code.
 
 This bundle includes the full reproduction data, per-op profile, code analysis, and a ready-to-post issue comment body.
 
